@@ -18,14 +18,4 @@ object CommandParser {
       case _ => None
     }
   }
-
-//  def parseSmth(s: String, c: Canvas): Unit = s match {
-//    case createCanvas => return Canvas
-//    case quit => quit
-//    case _ =>
-//      val command = parseInput(s)
-//      command.execute()
-//
-//  }
-
 }

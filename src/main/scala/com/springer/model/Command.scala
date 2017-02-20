@@ -1,12 +1,23 @@
 package com.springer.model
 
-abstract class Command {
-  def execute(board: Paint.Matrix): Paint.Matrix
+import com.springer.model.Paint.Matrix
+
+import scala.util.{Failure, Success, Try}
+
+case class IllegalArgumentException(msg: String) extends RuntimeException(msg)
+abstract class Command extends {
+  def execute(board: Paint.Matrix): Try[Paint.Matrix]
+  def isWithinBoard(board: Paint.Matrix, x: Int, y: Int): Boolean = {
+    Try(board(y)(x)) match {
+      case Success(_) => true
+      case Failure(_) => false
+    }
+  }
 }
 
 case class Canvas(rows: Int, cols: Int) extends Command {
-  override def execute(board: Paint.Matrix): Paint.Matrix = {
-    Array.fill[Char](rows, cols)(' ')
+  override def execute(board: Paint.Matrix): Try[Paint.Matrix] = {
+    Success(Array.fill[Char](rows, cols)(' '))
   }
 }
 
@@ -15,11 +26,17 @@ object Paint {
 }
 
 case class Line(x1: Int, y1: Int, x2: Int, y2: Int) extends Command {
-  override def execute(board: Paint.Matrix): Paint.Matrix = {
-    if (y1 == y2) {
-      drawHorizontalLine(board, y1, x1, x2)
+  override def execute(board: Paint.Matrix): Try[Paint.Matrix] = {
+    if(!isWithinBoard(board, x1, y1) || !isWithinBoard(board, x2, y2)) {
+      Failure(IllegalArgumentException("Coordinates are outside canvas."))
+    }
+    else if(x1 != x2 && y1 != y2) {
+      Failure(IllegalArgumentException("Only accept horizontal or vertical lines."))
+    }
+    else if (y1 == y2) {
+      Success(drawHorizontalLine(board, y1, x1, x2))
     } else {
-      drawVerticalLine(board, x1, y1, y2)
+      Success(drawVerticalLine(board, x1, y1, y2))
     }
   }
 
@@ -34,18 +51,21 @@ case class Line(x1: Int, y1: Int, x2: Int, y2: Int) extends Command {
       board(row)(col) = 'x'
     board
   }
-
 }
 
-
 case class Rectangle(x1: Int, y1: Int, x2: Int, y2: Int) extends Command {
-  override def execute(board: Paint.Matrix): Paint.Matrix = ???
+  override def execute(board: Paint.Matrix): Try[Paint.Matrix] = {
+    Line(x1, y1, x2, y1).execute(board)
+    Line(x1, y2, x2, y2).execute(board)
+    Line(x1, y1, x1, y2).execute(board)
+    Line(x2, y1, x2, y2).execute(board)
+  }
 }
 
 case class BucketFill(x: Int, y: Int, color: Char) extends Command {
-  override def execute(board: Paint.Matrix): Paint.Matrix = ???
+  override def execute(board: Paint.Matrix): Try[Paint.Matrix] = ???
 }
 
 case class Quit() extends Command {
-  override def execute(board: Paint.Matrix): Paint.Matrix = ???
+  override def execute(board: Paint.Matrix): Try[Paint.Matrix] = ???
 }
