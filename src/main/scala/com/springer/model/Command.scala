@@ -67,5 +67,7 @@ case class BucketFill(x: Int, y: Int, color: Char) extends Command {
 }
 
 case class Quit() extends Command {
-  override def execute(board: Paint.Matrix): Try[Paint.Matrix] = ???
+  override def execute(board: Paint.Matrix): Try[Paint.Matrix] = {
+    Success(board)
+  }
 }
