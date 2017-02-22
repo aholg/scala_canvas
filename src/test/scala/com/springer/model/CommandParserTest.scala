@@ -15,11 +15,11 @@ class CommandParserTest extends FunSuite with Matchers {
   }
 
   test("Parser should return none for illegal input") {
-    CommandParser.parseInput("C gsg20 20") shouldBe None
-    CommandParser.parseInput("T 1 1 4 1 2 2") shouldBe None
-    CommandParser.parseInput("abasd234") shouldBe None
-    CommandParser.parseInput("R") shouldBe None
-    CommandParser.parseInput("L") shouldBe None
+    CommandParser.parseInput("C gsg20 20").get shouldBe EmptyCommand()
+    CommandParser.parseInput("T 1 1 4 1 2 2").get shouldBe EmptyCommand()
+    CommandParser.parseInput("abasd234").get shouldBe EmptyCommand()
+    CommandParser.parseInput("R").get shouldBe EmptyCommand()
+    CommandParser.parseInput("L").get shouldBe EmptyCommand()
   }
 
 }

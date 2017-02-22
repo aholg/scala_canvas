@@ -16,7 +16,7 @@ object Renderer {
     return canvas
   }
 
-  def createBorder(amount: Int): String = {
+  private def createBorder(amount: Int): String = {
     val border = for (x <- 0 to amount) yield "-"
     border.mkString("")
   }

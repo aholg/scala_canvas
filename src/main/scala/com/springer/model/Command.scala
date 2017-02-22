@@ -5,6 +5,7 @@ import com.springer.model.Paint.Matrix
 import scala.util.{Failure, Success, Try}
 
 case class IllegalArgumentException(msg: String) extends RuntimeException(msg)
+case class NoCommandFoundError(msg: String) extends RuntimeException(msg)
 abstract class Command extends {
   def execute(board: Paint.Matrix): Try[Paint.Matrix]
   def isWithinBoard(board: Paint.Matrix, x: Int, y: Int): Boolean = {
@@ -18,6 +19,12 @@ abstract class Command extends {
 case class Canvas(rows: Int, cols: Int) extends Command {
   override def execute(board: Paint.Matrix): Try[Paint.Matrix] = {
     Success(Array.fill[Char](rows, cols)(' '))
+  }
+}
+
+case class EmptyCommand() extends Command {
+  override def execute(board: Paint.Matrix): Try[Paint.Matrix] = {
+    Failure(NoCommandFoundError("No command found"))
   }
 }
 
