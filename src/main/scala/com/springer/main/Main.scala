@@ -8,6 +8,7 @@ object Main extends App {
   var canvas: Paint.Matrix = _
 
   def run {
+    print("enter command: ")
     for (input <- io.Source.stdin.getLines()) {
       val cmd: Command = CommandParser.parseInput(input) match {
         case Some(command) if command.isInstanceOf[Canvas] => {
@@ -28,6 +29,7 @@ object Main extends App {
           case Failure(exception) => println(exception.getMessage)
         }
       }
+      print("enter command: ")
     }
   }
 

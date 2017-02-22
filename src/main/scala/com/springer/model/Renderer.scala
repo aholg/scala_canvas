@@ -4,16 +4,17 @@ import com.springer.model.Paint.Matrix
 
 object Renderer {
   def createCanvasBoardString(board: Paint.Matrix): String = {
-    var canvas = createBorder(board(0).size + 1) + "\n"
+    val canvas = new StringBuilder
+    canvas ++= createBorder(board(0).size + 1) + "\n"
     board.foreach { row =>
-      canvas += "|"
+      canvas += '|'
       row.foreach { col =>
-        canvas += col.toString
+        canvas += col
       }
-      canvas += "|\n"
+      canvas ++= "|\n"
     }
-    canvas += createBorder(board(0).size + 1)
-    return canvas
+    canvas ++= createBorder(board(0).size + 1)
+    return canvas.toString()
   }
 
   private def createBorder(amount: Int): String = {
