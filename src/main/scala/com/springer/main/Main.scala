@@ -5,30 +5,23 @@ import com.springer.model._
 import scala.util.{Failure, Success}
 
 object Main extends App {
-  var canvas: Paint.Matrix = _
+  var canvas: Paint.Matrix = Array.fill[Char](0, 0)(' ')
 
   def run {
     print("enter command: ")
     for (input <- io.Source.stdin.getLines()) {
-      val cmd: Command = CommandParser.parseInput(input) match {
-        case Some(command) if command.isInstanceOf[Canvas] => {
-          canvas = command.execute(canvas).get
-          command
-        }
-        case Some(command) => command
-      }
+      val cmd: Command = CommandParser.parseInput(input).get
 
-      if (cmd.isInstanceOf[Canvas]) {
-        println(Renderer.createCanvasBoardString(canvas))
-      } else if (cmd.isInstanceOf[Quit]) {
+      if (cmd.isInstanceOf[Quit]) {
         println("Goodbye")
         System.exit(1)
       } else {
         cmd.execute(canvas) match {
-          case Success(board) => println(Renderer.createCanvasBoardString(board))
+          case Success(board) => canvas = board
           case Failure(exception) => println(exception.getMessage)
         }
       }
+      println(Renderer.createCanvasBoardString(canvas))
       print("enter command: ")
     }
   }
