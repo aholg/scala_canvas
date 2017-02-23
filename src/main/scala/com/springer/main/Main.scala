@@ -10,7 +10,7 @@ object Main extends App {
   def run {
     print("enter command: ")
     for (input <- io.Source.stdin.getLines()) {
-      val cmd: Command = CommandParser.parseInput(input).get
+      val cmd: Command = CommandParser.parseInput(input)
 
       if (cmd.isInstanceOf[Quit]) {
         println("Goodbye")
