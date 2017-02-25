@@ -21,7 +21,7 @@ abstract class Command extends {
   }
 }
 
-case class Canvas(rows: Int, cols: Int) extends Command {
+case class Canvas(cols: Int, rows: Int) extends Command {
   override def execute(board: Paint.Matrix): Try[Paint.Matrix] = {
     Success(Array.fill[Char](rows, cols)(' '))
   }

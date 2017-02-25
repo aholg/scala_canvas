@@ -12,7 +12,7 @@ class CommandTest extends FunSuite with Matchers with CustomMatchers with Before
   }
 
   test("Canvas command returns a new canvas.") {
-    val canvas = Canvas(4, 20)
+    val canvas = Canvas(20, 4)
     canvas.execute(null) should haveSameDimensionsAs(matrix)
     canvas.execute(null).success.value shouldBe matrix
   }

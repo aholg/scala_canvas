@@ -11,9 +11,9 @@ object CommandParser {
 
     input match {
       case canvasPattern(x, y) => Canvas(x, y)
-      case linePattern(x1, y1, x2, y2) => Line(x1, y1, x2, y2)
-      case rectanglePattern(x1, y1, x2, y2) => Rectangle(x1, y1, x2, y2)
-      case bucketPattern(x, y, c) => BucketFill(x, y, c.charAt(0))
+      case linePattern(x1, y1, x2, y2) => Line(x1 - 1, y1 - 1, x2 - 1, y2 - 1)
+      case rectanglePattern(x1, y1, x2, y2) => Rectangle(x1 - 1 , y1 - 1, x2 - 1, y2 - 1)
+      case bucketPattern(x, y, c) => BucketFill(x - 1, y - 1, c.charAt(0))
       case "Q" => Quit()
       case _ => EmptyCommand()
     }
