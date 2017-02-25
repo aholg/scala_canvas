@@ -4,8 +4,8 @@ import com.springer.factories.Converter
 import com.springer.helpers.CustomMatchers
 import org.scalatest._
 
-class CommandTest extends FunSuite with Matchers with CustomMatchers with BeforeAndAfter with TryValues{
-  var matrix: Paint.Matrix  = _
+class CommandTest extends FunSuite with Matchers with CustomMatchers with BeforeAndAfter with TryValues {
+  var matrix: Paint.Matrix = _
 
   before {
     matrix = Array.fill[Char](4, 20)(' ')
@@ -22,17 +22,17 @@ class CommandTest extends FunSuite with Matchers with CustomMatchers with Before
       (
         "Horizontal line",
         Line(0, 2, 5, 2), Seq(
-          "                    ",
-          "                    ",
-          "xxxxxx              ",
-          "                    ")),
+        "                    ",
+        "                    ",
+        "xxxxxx              ",
+        "                    ")),
       (
         "Vertical line",
         Line(0, 0, 0, 3), Seq(
-          "x                   ",
-          "x                   ",
-          "x                   ",
-          "x                   "))
+        "x                   ",
+        "x                   ",
+        "x                   ",
+        "x                   "))
     )
 
     testCases.foreach { testCase =>
@@ -85,14 +85,46 @@ class CommandTest extends FunSuite with Matchers with CustomMatchers with Before
     val testCases = Seq(
       (
         "Correct Rectangle",
-          Rectangle(1, 1, 5, 3), Seq(
-              "                    ",
-              " xxxxx              ",
-              " x   x              ",
-              " xxxxx              "))
+        Rectangle(1, 1, 5, 3), Seq(
+        "                    ",
+        " xxxxx              ",
+        " x   x              ",
+        " xxxxx              "))
     )
     testCases.foreach { testCase =>
-     testCommand(testCase)
+      testCommand(testCase)
+    }
+  }
+
+  test("BucketFill command can fill an area with a color.") {
+    val testCases = Seq(
+      (
+        "Filled canvas",
+        BucketFill(9, 2, 'o'), Seq(
+        "oooooooooooooooooooo",
+        "oooooooooooooooooooo",
+        "oooooooooooooooooooo",
+        "oooooooooooooooooooo"))
+    )
+    testCases.foreach { testCase =>
+      testCommand(testCase)
+    }
+  }
+
+  test("BucketFill command fills only nodes of same color.") {
+    Line(0, 1, 5, 1).execute(matrix)
+    Line(5, 2, 5, 3).execute(matrix)
+    Rectangle(15, 0, 19, 2).execute(matrix)
+    val testCases = Seq(
+      ("Filled canvas with rectangles",
+        BucketFill(9, 2, 'o'), Seq(
+        "oooooooooooooooxxxxx",
+        "xxxxxxooooooooox   x",
+        "     xoooooooooxxxxx",
+        "     xoooooooooooooo"))
+    )
+    testCases.foreach { testCase =>
+      testCommand(testCase)
     }
   }
 
